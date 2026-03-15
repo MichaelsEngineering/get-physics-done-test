@@ -1,0 +1,30 @@
+run_id: fusion_transport_paper_001
+timezone: America/New_York
+start_time_local: "2026-03-15T23:00:00"
+freeze_new_research_local: "2026-03-16T04:45:00"
+hard_stop_local: "2026-03-16T03:45:00"
+
+limits:
+  max_runtime_minutes: 405
+  max_total_steps: 60
+  max_replans: 4
+  max_sources: 40
+  min_sources: 18
+  min_claims_extracted: 30
+  min_title_options: 5
+  min_thesis_options: 5
+  min_figures: 2
+  min_revision_passes: 1
+
+required_outputs:
+  - paper_runs/fusion_transport_paper_001/01_sources/paper_summaries.md
+  - paper_runs/fusion_transport_paper_001/02_claims/claims_table.csv
+  - paper_runs/fusion_transport_paper_001/03_disagreements/disagreement_map.md
+  - paper_runs/fusion_transport_paper_001/05_outline/paper_outline.md
+  - paper_runs/fusion_transport_paper_001/09_final/final_paper.md
+  - paper_runs/fusion_transport_paper_001/09_final/executive_summary.md
+
+stop_conditions:
+  - wall_clock_cutoff
+  - final_paper_exists
+  - all_required_sections_exist
