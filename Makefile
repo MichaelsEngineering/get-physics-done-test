@@ -3,9 +3,10 @@ PYTHON ?= python
 PKG ?= src
 TESTS ?= tests
 SRC := $(PKG) $(TESTS)
+SYNC_DELETE_REMOTE ?= 0
 
 # ==== Meta ====
-.PHONY: help default init lint type format test coverage check env-check clean
+.PHONY: help default init lint type format test coverage check env-check clean sync
 
 default: help
 
@@ -20,6 +21,7 @@ help:
 	@echo "   check      Run lint, type, and test"
 	@echo "   env-check  Verify expected local project files exist"
 	@echo "   clean      Remove caches and build artifacts"
+	@echo "   sync       Rebase local main on origin/main and prune merged branches"
 
 # ==== Setup ====
 init:
@@ -66,3 +68,17 @@ clean:
 	rm -rf .pytest_cache .mypy_cache .ruff_cache .coverage coverage.xml dist build \
 		$(PKG)/*.egg-info .benchmarks
 	find . -type d -name "__pycache__" -exec rm -rf {} +
+
+sync:
+	@echo "Syncing local main with origin/main and cleaning merged branches..."
+	git fetch origin
+	git checkout main
+	git rebase origin/main
+	@git branch --merged main | grep -v "main" | xargs -r git branch -d
+	@if [ "$(SYNC_DELETE_REMOTE)" = "1" ]; then \
+		echo "Deleting merged remote branches on origin..."; \
+		git branch -r --merged origin/main | grep -vE "origin/(main|HEAD)" | sed "s|origin/||" | xargs -r -n1 git push origin --delete; \
+	else \
+		echo "Skipping remote branch deletion (set SYNC_DELETE_REMOTE=1 to enable)"; \
+	fi
+	@git remote prune origin
