@@ -2,32 +2,40 @@ name: security
 
 on:
   pull_request:
+    paths:
+      - ".github/workflows/**"
+      - ".gitignore"
+      - "Makefile"
+      - "dev/**"
+      - "scripts/**"
+      - "src/**"
+      - "tests/**"
+      - "pyproject.toml"
+      - "uv.lock"
   push:
     branches:
       - main
+    paths:
+      - ".github/workflows/**"
+      - ".gitignore"
+      - "Makefile"
+      - "dev/**"
+      - "scripts/**"
+      - "src/**"
+      - "tests/**"
+      - "pyproject.toml"
+      - "uv.lock"
   schedule:
     - cron: "21 3 * * 1"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
 
 jobs:
-  codeql:
-    name: codeql
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      security-events: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@38b3b7bf288d49ccf58644769dc7a6afdccd05eb
-        with:
-          languages: python
-      - name: Analyze with CodeQL
-        uses: github/codeql-action/analyze@38b3b7bf288d49ccf58644769dc7a6afdccd05eb
-
   dependency-audit:
     name: dependency-audit
     runs-on: ubuntu-latest

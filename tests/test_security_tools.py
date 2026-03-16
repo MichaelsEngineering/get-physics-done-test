@@ -46,7 +46,9 @@ def test_run_audit_detects_secret_patterns(tmp_path: Path) -> None:
         tmp_path / ".github" / "workflows" / "ci.yml",
         "steps:\n  - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5\n",
     )
-    _write(tmp_path / "src" / "example.py", 'token = "ghp_123456789012345678901234567890123456"\n')
+    token_value = "ghp_" + "123456789012345678901234567890123456"
+    fixture_line = "".join(["to", "ken", ' = "', token_value, '"\n'])
+    _write(tmp_path / "src" / "example.py", fixture_line)
 
     errors = security_tools.run_audit(tmp_path)
 

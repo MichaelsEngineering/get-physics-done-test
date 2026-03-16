@@ -14,10 +14,34 @@ name: "CodeQL Advanced"
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - ".github/workflows/**"
+      - ".gitignore"
+      - "Makefile"
+      - "dev/**"
+      - "scripts/**"
+      - "src/**"
+      - "tests/**"
+      - "pyproject.toml"
+      - "uv.lock"
   pull_request:
     branches: [ "main" ]
+    paths:
+      - ".github/workflows/**"
+      - ".gitignore"
+      - "Makefile"
+      - "dev/**"
+      - "scripts/**"
+      - "src/**"
+      - "tests/**"
+      - "pyproject.toml"
+      - "uv.lock"
   schedule:
     - cron: '24 19 * * 2'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   analyze:
