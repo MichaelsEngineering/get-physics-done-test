@@ -2,11 +2,11 @@
 
 Public research log exploring the use of Get Physics Done (GPD) with Codex for predictive control of plasma turbulence and confinement in fusion reactors.
 
-This repository documents experiments using GPD as a structured research workflow that converts physics questions into bounded overnight paper drafts and reproducible research artifacts.
+This repository documents experiments using GPD as a structured research workflow that converts physics questions into bounded paper drafts and reproducible research artifacts.
 
 ## Goal
 
-Evaluate whether GPD can accelerate early-stage research exploration in fusion control problems by producing structured drafts, literature summaries, and model proposals overnight.
+Evaluate whether GPD can accelerate early-stage research exploration in fusion control problems by producing structured drafts, literature summaries, and model proposals.
 
 The specific focus is predictive control of tokamak plasma turbulence and confinement.
 
