@@ -33,6 +33,18 @@ htmlcov/
 .env.*
 .python-version
 
+# Local GPD state and research outputs
+.gpd/observability/
+.gpd/traces/
+.gpd/state.json
+.gpd/config.json
+paper_runs/
+runs/
+*.aux
+*.log
+*.out
+*.pdf
+
 # Editor and OS noise
 .DS_Store
 Thumbs.db

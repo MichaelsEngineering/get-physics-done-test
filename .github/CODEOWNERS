@@ -1,0 +1,14 @@
+*                 @MichaelsEngineering
+.github/**       @MichaelsEngineering
+plans/**         @MichaelsEngineering
+scripts/agent-orchestrator/** @MichaelsEngineering
+src/**           @MichaelsEngineering
+tests/**         @MichaelsEngineering
+traces/**        @MichaelsEngineering
+runs/**          @MichaelsEngineering
+dev/**           @MichaelsEngineering
+AGENTS.md        @MichaelsEngineering
+README.md        @MichaelsEngineering
+Makefile         @MichaelsEngineering
+pyproject.toml   @MichaelsEngineering
+LICENSE          @MichaelsEngineering
