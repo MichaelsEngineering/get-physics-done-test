@@ -6,7 +6,7 @@ SRC := $(PKG) $(TESTS)
 SYNC_DELETE_REMOTE ?= 0
 
 # ==== Meta ====
-.PHONY: help default init lint type format test coverage check env-check clean sync
+.PHONY: help default init lint type format test coverage check env-check resume-check clean sync gate smoke security-audit sbom
 
 default: help
 
@@ -19,7 +19,12 @@ help:
 	@echo "   test       Run pytest when tests exist"
 	@echo "   coverage   Run pytest with coverage when tests exist"
 	@echo "   check      Run lint, type, and test"
+	@echo "   gate       Run repository policy and workflow hardening checks"
+	@echo "   smoke      Run the installed CLI smoke test"
+	@echo "   security-audit  Scan the repo for common secret and workflow issues"
+	@echo "   sbom       Generate a CycloneDX SBOM under runs/security/"
 	@echo "   env-check  Verify expected local project files exist"
+	@echo "   resume-check  Diagnose interrupted overnight runs and print recovery steps"
 	@echo "   clean      Remove caches and build artifacts"
 	@echo "   sync       Rebase local main on origin/main and prune merged branches"
 
@@ -60,8 +65,27 @@ coverage:
 
 check: lint type test
 
+gate:
+	$(PYTHON) -m src.scripts.security_tools gate
+
+smoke:
+	@output="$$( $(PYTHON) -c "from src.gpd_test.cli import main; main()" )"; \
+	if [ "$$output" != "get-physics-done-test" ]; then \
+		echo "Unexpected CLI output: $$output"; \
+		exit 1; \
+	fi
+
+security-audit:
+	$(PYTHON) -m src.scripts.security_tools audit
+
+sbom:
+	$(PYTHON) -m src.scripts.security_tools sbom
+
 env-check:
 	$(PYTHON) -m src.scripts.check_env
+
+resume-check:
+	$(PYTHON) -m src.scripts.check_env recover
 
 # ==== Hygiene ====
 clean:

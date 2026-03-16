@@ -18,6 +18,7 @@ dependencies = [
 
 [project.scripts]
 gpd-test = "src.gpd_test.cli:main"
+gpd-test-recover = "src.scripts.check_env:recover_main"
 
 [tool.setuptools.packages.find]
 where = ["."]
