@@ -2,44 +2,47 @@
 
 ## Project Reference
 
-See: .gpd/PROJECT.md (updated 2026-03-15)
+See: `.gpd/PROJECT.md` (updated 2026-03-18)
 
 **Machine-readable scoping contract:** `.gpd/state.json` field `project_contract`
 
-**Core research question:** Can a reduced-order turbulence-to-confinement model be framed as a credible control and commercialization wedge for tokamak operations, with enough evidence and caveats to support a draft paper?
-**Current focus:** Phase 1: Overnight Paper Run
+**Core research question:** Can multiscale field dynamics across fluid turbulence and plasma / MHD be organized into a unified, invariant-aware learning-and-rollout program that remains stable over long horizons, transfers across scales and regimes, and yields paper-ready falsifiable claims at each stage?
+**Current focus:** Phase 1: Research Mapping
 
 ## Current Position
 
 **Current Phase:** 01
-**Current Phase Name:** Overnight Paper Run
-**Total Phases:** 1
+**Current Phase Name:** Research Mapping
+**Total Phases:** 5
 **Current Plan:** 1
 **Total Plans in Phase:** 3
-**Status:** Ready to execute
-**Last Activity:** 2026-03-15
-**Last Activity Description:** Initialized GPD scaffold and overnight run contract
+**Status:** In Progress
+**Last Activity:** 2026-03-18
+**Last Activity Description:** Remapped the project as a multiscale turbulence and plasma research program
 
-**Progress:** [░░░░░░░░░░] 0%
+**Progress:** [█░░░░░░░░░] 10%
 
 ## Active Calculations
 
-- No active calculations yet; execution begins with literature extraction and claim mapping.
+- No heavy numerical campaigns are active yet; the current work product is the research map and milestone decomposition.
 
 ## Intermediate Results
 
-- No intermediate results recorded yet.
+- The repository contains a working grid turbulence baseline under `src/sentinel_core/`
+- Basic invariance/stability diagnostics are already emitted in the rollout result
+- Graph and equivariant scaffolds exist on the same task-building interface
 
 ## Open Questions
 
-- Which literature anchors will be decisive enough for the final thesis?
-- Can the commercialization wedge be argued without overclaiming beyond the literature?
+- Which invariants should be hard constraints versus monitored diagnostics in each target domain?
+- What minimal plasma / MHD task is strong enough to test the unification claim without overextending the current codebase?
+- Which paper arc should be prioritized after the grid turbulence milestone is hardened?
 
 ## Performance Metrics
 
 | Label | Duration | Tasks | Files |
 | ----- | -------- | ----- | ----- |
-| setup | 00:00 | 0 | 0 |
+| research-map | 00:00 | 0 | 0 |
 
 ## Accumulated Context
 
@@ -48,36 +51,42 @@ See: .gpd/PROJECT.md (updated 2026-03-15)
 Full log: `.gpd/DECISIONS.md`
 
 **Recent high-impact:**
-- [Phase 1]: Standardize all run outputs under `paper_runs/fusion_transport_paper_001/`
-- [Phase 1]: Require an explicit trace summary at `paper_runs/fusion_transport_paper_001/trace.json`
+
+- [Phase 1]: Adopt the theory chain as the project spine
+- [Phase 1]: Keep grid turbulence as the first executable baseline
+- [Phase 1]: Track energy drift, long-rollout instability, scale-transfer failure, conservation-law violation, and regime-shift weakness as named failure modes
 
 ### Active Approximations
 
 | Approximation | Validity Range | Controlling Parameter | Current Value | Status |
 | ------------- | -------------- | --------------------- | ------------- | ------ |
-| Literature-grounded review framing | Until contradicted by extracted sources | Source coverage | TBD | Pending |
+| Toy turbulence baseline is an adequate first falsification surface | Phase 2 grid-only work | Task complexity and invariants covered | Limited | Active |
+| Graph/equivariant scaffolds can remain non-production while still informing roadmap design | Phase 1 mapping through Phase 3 planning | API stability | Moderate | Active |
 
 **Convention Lock:**
 
-- Unit system: SI unless overridden by cited source
-- Symbol normalization: derive from cited literature during execution
+- Unit system: dimensionless simulation units unless task-specific physics requires SI or normalized plasma units
+- Architecture lock: all new dynamics must resolve through geometry, symmetry, operator class, closure, and integrator
 
 ### Propagated Uncertainties
 
 | Quantity | Current Value | Uncertainty | Last Updated (Phase) | Method |
 | -------- | ------------- | ----------- | -------------------- | ------ |
-| Thesis support level | TBD | TBD | Phase 1 | Source synthesis |
+| Domain-transfer viability | TBD | High | Phase 1 | Research mapping and milestone definition |
+| Long-horizon stability ceiling | TBD | High | Phase 1 | To be measured in Phase 2 |
 
 ### Pending Todos
 
-None yet.
+- Materialize `.gpd/research-map/` as the authority for formalism, references, architecture, structure, conventions, validation, and concerns
+- Select the first paper arc after Phase 2 evidence exists
 
 ### Blockers/Concerns
 
-- Decisive benchmark papers are not yet selected.
+- Plasma / MHD extension is not implemented yet
+- Verification criteria for scale transfer and regime shift are not yet executable
 
 ## Session Continuity
 
-**Last session:** 2026-03-15
-**Stopped at:** Project scaffold created; next step is execute Phase 1
-**Resume file:** `.gpd/phases/01-overnight-paper-run/01-01-PLAN.md`
+**Last session:** 2026-03-18
+**Stopped at:** Research map creation and milestone decomposition
+**Resume file:** `PLAN.md`

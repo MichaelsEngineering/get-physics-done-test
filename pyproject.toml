@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "get-physics-done-test"
 version = "0.1.0"
-description = "Public repo tracking Codex + GPD experience on fusion-plasma research workflows."
+description = "GPD-compatible simulation research infrastructure for data-driven multiscale field dynamics."
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
@@ -16,9 +16,23 @@ dependencies = [
     "jinja2>=3.1",
 ]
 
+[project.optional-dependencies]
+sim = [
+    "torch>=2.3",
+    "neuraloperator>=0.3",
+]
+graph = [
+    "networkx>=3.3",
+    "torch-geometric>=2.5",
+]
+equivariant = [
+    "e3nn>=0.5",
+]
+
 [project.scripts]
 gpd-test = "src.gpd_test.cli:main"
 gpd-test-recover = "src.scripts.check_env:recover_main"
+sentinel-sim = "src.gpd_test.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["."]

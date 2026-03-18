@@ -1,9 +1,12 @@
 # ==== Configuration ====
-PYTHON ?= python
+PYTHON ?= python3
 PKG ?= src
 TESTS ?= tests
 SRC := $(PKG) $(TESTS)
 SYNC_DELETE_REMOTE ?= 0
+UV ?= uv
+UV_CACHE_DIR ?= .uv-cache
+RUN := UV_CACHE_DIR=$(UV_CACHE_DIR) $(UV) run
 
 # ==== Meta ====
 .PHONY: help default init lint type format test coverage check env-check resume-check clean sync gate smoke security-audit sbom
@@ -30,35 +33,35 @@ help:
 
 # ==== Setup ====
 init:
-	uv sync --dev
+	UV_CACHE_DIR=$(UV_CACHE_DIR) $(UV) sync --dev
 
 # ==== Quality gates ====
 lint:
 	@echo "Running Ruff lint..."
-	@ruff check $(PKG) $(TESTS)
+	@$(RUN) ruff check $(PKG) $(TESTS)
 	@echo "Running Ruff format check..."
-	@ruff format --check $(PKG) $(TESTS)
+	@$(RUN) ruff format --check $(PKG) $(TESTS)
 
 type:
 	@if find $(TESTS) -type f -name "*.py" | grep -q .; then \
-		mypy $(PKG) $(TESTS); \
+		$(RUN) mypy $(PKG) $(TESTS); \
 	else \
-		mypy $(PKG); \
+		$(RUN) mypy $(PKG); \
 	fi
 
 format:
-	ruff format $(SRC)
+	$(RUN) ruff format $(SRC)
 
 test:
 	@if find $(TESTS) -type f -name "*.py" | grep -q .; then \
-		pytest -q; \
+		$(RUN) pytest -q; \
 	else \
 		echo "No tests found under $(TESTS); skipping pytest."; \
 	fi
 
 coverage:
 	@if find $(TESTS) -type f -name "*.py" | grep -q .; then \
-		pytest -q --cov=$(PKG) --cov=$(TESTS) --cov-report=term-missing --cov-report=xml; \
+		$(RUN) pytest -q --cov=$(PKG) --cov=$(TESTS) --cov-report=term-missing --cov-report=xml; \
 	else \
 		echo "No tests found under $(TESTS); skipping coverage."; \
 	fi
@@ -66,31 +69,31 @@ coverage:
 check: lint type test
 
 gate:
-	$(PYTHON) -m src.scripts.security_tools gate
+	$(RUN) python -m src.scripts.security_tools gate
 
 smoke:
-	@output="$$( $(PYTHON) -c "from src.gpd_test.cli import main; main()" )"; \
-	if [ "$$output" != "get-physics-done-test" ]; then \
+	@output="$$( $(RUN) gpd-test architecture )"; \
+	if ! printf "%s" "$$output" | grep -q "architecture summary"; then \
 		echo "Unexpected CLI output: $$output"; \
 		exit 1; \
 	fi
 
 security-audit:
-	$(PYTHON) -m src.scripts.security_tools audit
+	$(RUN) python -m src.scripts.security_tools audit
 
 sbom:
-	$(PYTHON) -m src.scripts.security_tools sbom
+	$(RUN) python -m src.scripts.security_tools sbom
 
 env-check:
-	$(PYTHON) -m src.scripts.check_env
+	$(RUN) python -m src.scripts.check_env
 
 resume-check:
-	$(PYTHON) -m src.scripts.check_env recover
+	$(RUN) python -m src.scripts.check_env recover
 
 # ==== Hygiene ====
 clean:
 	rm -rf .pytest_cache .mypy_cache .ruff_cache .coverage coverage.xml dist build \
-		$(PKG)/*.egg-info .benchmarks
+		$(PKG)/*.egg-info *.egg-info .benchmarks
 	find . -type d -name "__pycache__" -exec rm -rf {} +
 
 sync:
