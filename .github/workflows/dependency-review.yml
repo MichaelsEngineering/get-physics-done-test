@@ -1,0 +1,32 @@
+name: dependency-review
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  dependency-review:
+    name: dependency-review
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+        with:
+          fetch-depth: 0
+      - name: Detect dependency file changes
+        id: changed
+        run: |
+          if git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}" | grep -Eq '^(pyproject\.toml|uv\.lock)$'; then
+            echo "run_review=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run_review=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Skip dependency review when no package manifests changed
+        if: steps.changed.outputs.run_review != 'true'
+        run: echo "No dependency manifest changes detected; skipping dependency review."
+      - name: Review dependency changes
+        if: steps.changed.outputs.run_review == 'true'
+        uses: actions/dependency-review-action@v4
